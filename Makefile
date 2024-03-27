@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alirola- <alirola-@student.42malaga.com    +#+  +:+       +#+         #
+#    By: alirola- <alirola-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 17:53:46 by ilopez-r          #+#    #+#              #
-#    Updated: 2024/03/21 13:40:57 by alirola-         ###   ########.fr        #
+#    Updated: 2024/03/27 18:34:43 by alirola-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,8 @@ FILES = src/minishell.c\
 		src/builtins/cd.c\
 		src/builtins/unset.c\
 		src/builtins/builtins_utils/checks.c\
-		src/builtins/exit.c\
 		src/builtins/builtins_utils/frees.c\
+		
 OBJS = $(FILES:.c=.o)
 
 LIBFT_PATH = ./libftc

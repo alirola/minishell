@@ -14,17 +14,17 @@
 
 void	free_path(t_data *data)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
-	if(data->path)
+	if (data->path)
 	{
-		while(data->path[i])
+		while (data->path[i])
 		{
 			free(data->path[i]);
-			data->path[i++] == NULL;
+			data->path[i++] = NULL;
 		}
-		free(data->path)
+		free(data->path);
 		data->path = NULL;
 	}
 }

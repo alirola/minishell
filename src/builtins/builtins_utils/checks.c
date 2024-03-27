@@ -17,12 +17,12 @@ void	check_path(t_data *data)
 	t_env	*aux;
 
 	aux = data->env;
-	while(aux)
+	while (aux)
 	{
-		if(!ft_strncmp(aux->name, "PATH", 4))
+		if (!ft_strncmp (aux->name, "PATH", 4))
 		{
 			data->path_flag = 1;
-			return;
+			return ;
 		}
 		else
 			data->path_flag = 0;
