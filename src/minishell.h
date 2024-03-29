@@ -6,7 +6,7 @@
 /*   By: alirola- <alirola-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:21:29 by ilopez-r          #+#    #+#             */
-/*   Updated: 2024/03/27 18:36:01 by alirola-         ###   ########.fr       */
+/*   Updated: 2024/03/29 15:19:38 by alirola-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void	env_exe(t_data *data);
 void	cd_exe(t_data *d, char **s, int flag);
 void	unset_exe(t_data *data, char *name);
 void	check_path(t_data *data);
-//int		exit_exe(t_data *data, /*nodo*/);
+//int		exit_exe(t_data *data);
 void	free_path(t_data *data);
-
+int		env_size(t_env *lst);
 
 #endif

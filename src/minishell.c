@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alirola- <alirola-@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: alirola- <alirola-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:29:34 by ilopez-r          #+#    #+#             */
-/*   Updated: 2024/03/20 12:56:40 by alirola-         ###   ########.fr       */
+/*   Updated: 2024/03/28 16:35:43 by alirola-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@ static void	init_struct(t_data *data)
 }
 
 int	input(t_data *data)
-{	
+{
 	char *s;
-	s = "SHELL";
 	
+	s = "PATH";
+
 	split_path(data);
 	split_cmds(data);
 	if (ft_strncmp(data->cmds[0], "pwd\0", 4) == EXIT_SUCCESS)
@@ -35,13 +36,17 @@ int	input(t_data *data)
 	if (ft_strncmp(data->cmds[0], "env\0", 4) == EXIT_SUCCESS)
 		env_exe(data);
 	if (ft_strncmp(data->cmds[0], "unset\0", 6) == EXIT_SUCCESS)
-		unset_exe(data, s);
-	// if (!ft_strncmp(data->cmds[0], "cd\0", 7))
-	// {
-	// 	if(cd_exe(data, data->cmds, 0) == EXIT_FAILURE)
-	// 		return(EXIT_FAILURE);
-	// 	return (EXIT_SUCCESS);
-	// }
+		unset_exe(data, data->cmds[1]);
+	if (ft_strncmp(data->cmds[0], "cd\0", 3) == EXIT_SUCCESS)
+		cd_exe(data, &s, 0);
+	/* if (ft_strncmp(data->cmds[0], "exit\0", 5) == EXIT_SUCCESS)
+		exit_exe(data); */
+	 /* if (!ft_strncmp(data->cmds[0], "cd\0", 7))
+	 {
+	 	if (cd_exe(data, &s, 0) == EXIT_FAILURE)
+	 		return(EXIT_FAILURE);
+	 	return (EXIT_SUCCESS);
+	 } */
 	return (EXIT_SUCCESS);
 }
 
