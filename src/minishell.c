@@ -6,7 +6,7 @@
 /*   By: alirola- <alirola-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:29:34 by ilopez-r          #+#    #+#             */
-/*   Updated: 2024/03/28 16:35:43 by alirola-         ###   ########.fr       */
+/*   Updated: 2024/04/01 12:21:03 by alirola-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ int	input(t_data *data)
 	if (ft_strncmp(data->cmds[0], "env\0", 4) == EXIT_SUCCESS)
 		env_exe(data);
 	if (ft_strncmp(data->cmds[0], "unset\0", 6) == EXIT_SUCCESS)
-		unset_exe(data, data->cmds[1]);
+		unset_exe(data, s);
 	if (ft_strncmp(data->cmds[0], "cd\0", 3) == EXIT_SUCCESS)
-		cd_exe(data, &s, 0);
+		cd_exe(data, data->cmds, 0);
 	/* if (ft_strncmp(data->cmds[0], "exit\0", 5) == EXIT_SUCCESS)
 		exit_exe(data); */
 	 /* if (!ft_strncmp(data->cmds[0], "cd\0", 7))
