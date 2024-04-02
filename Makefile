@@ -6,7 +6,7 @@
 #    By: alirola- <alirola-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 17:53:46 by ilopez-r          #+#    #+#              #
-#    Updated: 2024/03/28 16:36:18 by alirola-         ###   ########.fr        #
+#    Updated: 2024/04/02 13:27:26 by alirola-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,13 +18,18 @@ FILES = src/minishell.c\
 		src/prompt.c\
 		src/split_path.c\
 		src/builtins/env.c\
-		src/split_cmds.c\
 		src/builtins/pwd.c\
 		src/builtins/cd.c\
 		src/builtins/unset.c\
 		src/builtins/builtins_utils/checks.c\
 		src/builtins/builtins_utils/frees.c\
-		
+		src/builtins/export.c\
+		src/builtins/exit.c\
+		src/split_cmds.c\
+		src/split_words.c\
+		src/parser.c\
+		src/free_nodes.c\
+
 OBJS = $(FILES:.c=.o)
 
 LIBFT_PATH = ./libftc
