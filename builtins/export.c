@@ -6,11 +6,11 @@
 /*   By: alirola- <alirola-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:08:11 by ilopez-r          #+#    #+#             */
-/*   Updated: 2024/04/04 15:21:22 by alirola-         ###   ########.fr       */
+/*   Updated: 2024/04/12 19:04:03 by alirola-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 int	export_cmp(const char *s1, const char *s2)
 {
@@ -103,29 +103,30 @@ static void	export_exe_content(t_data *data, char *s, char **tmp, t_env *aux)
 	free_dptr(tmp);
 }
 
-void	export_exe(t_data *data, char **s, int index)
+void	export_exe(t_data *data, char **s, int index, int fd)
 {
-	t_env	*aux;
+	t_env	*a;
 
 	set_index(data);
-	aux = data->env;
+	a = data->env;
 	if (s[1])
-		export_exe_content(data, s[1], NULL, aux);
+		export_exe_content(data, s[1], NULL, a);
 	else if (s[1] == NULL)
 	{
-		while (aux)
+		while (a)
 		{
-			if (aux->index == index)
+			if (a->index == index)
 			{
-				if (ft_strncmp(aux->content, "\"\"\0", 3) == EXIT_SUCCESS)
-					printf("declare -x %s=%s\n", aux->name, aux->content);
+				if (ft_strncmp(a->content, "\"\"\0", 3) == EXIT_SUCCESS)
+					ft_printf(fd, "declare -x %s=%s\n", a->name, a->content);
 				else
-					printf("declare -x %s=\"%s\"\n", aux->name, aux->content);
-				aux = data->env;
+					ft_printf(fd, "declare -x %s\n",
+						a->name, a->content);
+				a = data->env;
 				index++;
 			}
-			else if (aux->index != index)
-				aux = aux->next;
+			else if (a->index != index)
+				a = a->next;
 		}
 	}
 	//g_status = 0;

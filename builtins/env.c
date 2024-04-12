@@ -6,11 +6,11 @@
 /*   By: alirola- <alirola-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 16:08:43 by ilopez-r          #+#    #+#             */
-/*   Updated: 2024/04/03 19:13:11 by alirola-         ###   ########.fr       */
+/*   Updated: 2024/04/12 19:04:32 by alirola-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 int	env_size(t_env *lst)
 {
@@ -50,13 +50,11 @@ void	ft_lstadd_back_env(t_env **lst, t_env *new)
 		*lst = new;
 }
 
-void	get_env(t_data *data, char **env)
+void	get_env(t_data *data, char **env, int i)
 {
-	int		i;
 	char	**line;
 	t_env	*aux;
 
-	i = -1;
 	while (env[++i] != NULL)
 	{
 		aux = ft_calloc(1, sizeof(t_env));
@@ -72,18 +70,20 @@ void	get_env(t_data *data, char **env)
 		aux->next = NULL;
 		ft_lstadd_back_env(&data->env, aux);
 		free_dptr(line);
+		line = NULL;
 	}
 	set_index(data);
 }
 
-void	env_exe(t_data *data)
+void	env_exe(t_data *data, int fd)
 {
 	t_env	*aux;
 
 	aux = data->env;
 	while (aux != NULL)
 	{
-		printf("%s%s\n", aux->name, aux->content);
+		if ((aux->content[1] != '"') && (aux->content[2] != '"'))
+			ft_printf(fd, "%s%s\n", aux->name, aux->content);
 		aux = aux->next;
 	}
 }
