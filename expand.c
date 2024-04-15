@@ -6,55 +6,34 @@
 /*   By: alirola- <alirola-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:08:33 by alirola-          #+#    #+#             */
-/*   Updated: 2024/04/11 20:00:59 by alirola-         ###   ########.fr       */
+/*   Updated: 2024/04/15 11:51:42 by alirola-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 static char	*get_env_content(t_data *d, char *s)
 {
-	//char	*status;
+	char	*status;
 	t_env	*aux;
+	char	**ctnt;
 
 	aux = d->env;
-	/* if (ft_strncmp(s, "?", 1) == EXIT_SUCCESS)
+	if (ft_strncmp(s, "?", 1) == EXIT_SUCCESS)
 	{
 		status = ft_itoa(g_status);
 		return (status);
-	} */
+	}
 	while (aux)
 	{
-		if (ft_strncmp(aux->name, s, ft_strlen(s)) == EXIT_SUCCESS)
-			return (ft_strdup(aux->content));
+		if (ft_strncmp(aux->name, s, ft_strlen(aux->name)) == EXIT_SUCCESS)
+		{
+			ctnt = ft_split(aux->content, '=');
+			return (ft_strdup(ctnt[0]));
+		}
 		aux = aux->next;
 	}
 	return (ft_strdup(""));
-}
-
-static void	expand_2(t_data *d, int *i, int *flag, char **exp)
-{
-	if ((!*flag && d->cmds[d->i][d->j] == '~')
-		&& ((d->cmds[d->i][d->j - 1] == ' ' && d->cmds[d->i][d->j + 1] == ' ')
-		|| (d->cmds[d->i][d->j + 1] == '\0')
-		|| (d->cmds[d->i][d->j + 1] == '/')))
-	{
-		if (d->cmds[d->i][d->j] == '\'')
-			*flag = !*flag;
-		*exp = gnl_ft_strjoin(*exp, get_env_content(d, "HOME"));
-		d->j++;
-	}
-	else
-	{
-		*i = d->j;
-		while ((d->cmds[d->i][d->j] != '$' || *flag) && d->cmds[d->i][d->j])
-		{
-			if (d->cmds[d->i][d->j] == '\'')
-				*flag = !*flag;
-			d->j++;
-		}
-		*exp = gnl_ft_strjoin(*exp, ft_substr(d->cmds[d->i], *i, d->j - *i));
-	}
 }
 
 static void	expand_1(t_data *d, int *i, int *flag, char **expand)
@@ -84,6 +63,35 @@ static void	expand_1(t_data *d, int *i, int *flag, char **expand)
 	}
 }
 
+static void	expand_2(t_data *d, int *i, int *flag, char **exp)
+{
+	while ((d->cmds[d->i][d->j] != '$' || *flag) && d->cmds[d->i][d->j])
+	{
+		if ((!*flag && d->cmds[d->i][d->j] == '~')
+			&& ((d->cmds[d->i][d->j - 1] == ' '
+			&& d->cmds[d->i][d->j + 1] == ' ')
+			|| (d->cmds[d->i][d->j + 1] == '\0')
+			|| (d->cmds[d->i][d->j + 1] == '/')))
+		{
+			if (d->cmds[d->i][d->j] == '\'')
+				*flag = !*flag;
+			*exp = gnl_ft_strjoin(*exp, get_env_content(d, "HOME"));
+			d->j++;
+		}
+		else if (!*flag && d->cmds[d->i][d->j] != '~')
+		{
+			*i = d->j;
+			while ((d->cmds[d->i][d->j] != '$' || *flag)
+				&& d->cmds[d->i][d->j] && d->cmds[d->i][d->j] != '~')
+			{
+				d->j++;
+			}
+			*exp = gnl_ft_strjoin(*exp,
+					ft_substr(d->cmds[d->i], *i, d->j - *i));
+		}
+	}
+}
+
 void	expand(t_data *data)
 {
 	int		i;
@@ -92,20 +100,21 @@ void	expand(t_data *data)
 
 	expand = NULL;
 	flag = 0;
-	while (data->cmds[++data->i])
+	while (data->cmds[data->i])
 	{
 		data->j = 0;
 		i = 0;
 		while (data->cmds[data->i][data->j])
 		{
 			expand_1(data, &i, &flag, &expand);
-			expand_2(data, &i, &flag, &expand);
+			expand_2(data, &i, &flag, &expand);  
 		}
 		free(data->cmds[data->i]);
 		data->cmds[data->i] = NULL;
 		data->cmds[data->i] = ft_strdup(expand);
 		free(expand);
 		expand = NULL;
+		data->i++;
 	}
 	data->i = 0;
 }
