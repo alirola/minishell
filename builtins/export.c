@@ -6,7 +6,7 @@
 /*   By: alirola- <alirola-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:08:11 by ilopez-r          #+#    #+#             */
-/*   Updated: 2024/04/15 13:15:13 by alirola-         ###   ########.fr       */
+/*   Updated: 2024/04/15 18:26:44 by alirola-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	export_exe(t_data *data, char **s, int index, int fd)
 			{
 				data->ctnt = ft_split(data->x->content, '=');
 				if (ft_strncmp(data->x->content, "\"\"\0", 3) == EXIT_SUCCESS
-					|| data->ctnt[0][1] == '\"')
+					|| (data->ctnt[0] && data->ctnt[0][1] == '\"'))
 					ft_printf(fd, "declare -x %s\n", data->x->name);
 				else
 					ft_printf(fd, "declare -x %s=\"%s\"\n",
