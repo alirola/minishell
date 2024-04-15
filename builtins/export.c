@@ -6,7 +6,7 @@
 /*   By: alirola- <alirola-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:08:11 by ilopez-r          #+#    #+#             */
-/*   Updated: 2024/04/12 19:04:03 by alirola-         ###   ########.fr       */
+/*   Updated: 2024/04/15 13:15:13 by alirola-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,9 @@ static void	export_exe_content(t_data *data, char *s, char **tmp, t_env *aux)
 		return ;
 	new->name = ft_strdup(tmp[0]);
 	if (tmp[1] == NULL)
-		new->content = ft_strjoin("=", "\"\"");
+		new->content = ft_strdup("\"\"");
 	else if (tmp[1])
-		new->content = ft_strjoin("=", tmp[1]);
+		new->content = ft_strdup(tmp[1]);
 	new->index = 0;
 	aux = data->env;
 	while (aux->next)
@@ -105,29 +105,29 @@ static void	export_exe_content(t_data *data, char *s, char **tmp, t_env *aux)
 
 void	export_exe(t_data *data, char **s, int index, int fd)
 {
-	t_env	*a;
-
 	set_index(data);
-	a = data->env;
+	data->x = data->env;
 	if (s[1])
-		export_exe_content(data, s[1], NULL, a);
+		export_exe_content(data, s[1], NULL, data->x);
 	else if (s[1] == NULL)
 	{
-		while (a)
+		while (data->x)
 		{
-			if (a->index == index)
+			if (data->x->index == index)
 			{
-				if (ft_strncmp(a->content, "\"\"\0", 3) == EXIT_SUCCESS)
-					ft_printf(fd, "declare -x %s=%s\n", a->name, a->content);
+				data->ctnt = ft_split(data->x->content, '=');
+				if (ft_strncmp(data->x->content, "\"\"\0", 3) == EXIT_SUCCESS
+					|| data->ctnt[0][1] == '\"')
+					ft_printf(fd, "declare -x %s\n", data->x->name);
 				else
-					ft_printf(fd, "declare -x %s\n",
-						a->name, a->content);
-				a = data->env;
+					ft_printf(fd, "declare -x %s=\"%s\"\n",
+						data->x->name, data->ctnt[0]);
+				data->x = data->env;
 				index++;
 			}
-			else if (a->index != index)
-				a = a->next;
+			else if (data->x->index != index)
+				data->x = data->x->next;
 		}
 	}
-	//g_status = 0;
+	g_status = 0;
 }
